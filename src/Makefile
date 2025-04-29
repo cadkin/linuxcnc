@@ -616,13 +616,13 @@ $(patsubst %,../include/%,$(wildcard *.h)): ../include/%.h: %.h
 $(patsubst %,../include/%,$(wildcard *.hh)): ../include/%.hh: %.hh
 	$(Q)-cp $^ $@
 
-INSTALL=install -o root
+INSTALL=install
 DIR=$(INSTALL) -d -m 0755
 FILE=$(INSTALL) -m 0644
 TREE=cp -dR
 CONFIGFILE=$(INSTALL) -m 0644
 EXE=$(INSTALL) -m 0755
-SETUID=$(INSTALL) -m 4755
+SETUID=$(INSTALL) -m 0755
 GLOB=$(wildcard $(1))
 
 XDGDESKTOP = \
@@ -669,13 +669,12 @@ install-dirs:
 		$(DESTDIR)$(sysconfdir)/linuxcnc $(DESTDIR)$(bindir) $(DESTDIR)$(libdir) \
 		$(DESTDIR)/$(libdir)/linuxcnc $(DESTDIR)$(includedir)/linuxcnc \
 		$(DESTDIR)$(docsdir) $(DESTDIR)$(ncfilesdir) \
-		$(DESTDIR)/etc/X11/app-defaults $(DESTDIR)$(tcldir)/bin \
+		$(DESTDIR)$(prefix)/etc/X11/app-defaults $(DESTDIR)$(tcldir)/bin \
 		$(DESTDIR)$(tcldir)/scripts \
 		$(DESTDIR)$(mandir)/man1 \
 		$(DESTDIR)$(mandir)/man3 \
 		$(DESTDIR)$(mandir)/man9 \
 		$(DESTDIR)$(tcldir)/msgs \
-		$(DESTDIR)$(localedir)/de/LC_MESSAGES \
 		$(DESTDIR)$(datadir)/axis/images \
 		$(DESTDIR)$(datadir)/axis/tcl \
 		$(DESTDIR)$(datadir)/gscreen/images \
@@ -736,8 +735,9 @@ install-kernel-indep: install-dirs
 	$(FILE) ../lib/linuxcnc/canterp.so $(DESTDIR)$(libdir)/linuxcnc/
 	$(FILE) $(HEADERS) $(DESTDIR)$(includedir)/linuxcnc/
 	$(TREE) $(NC_FILES) $(DESTDIR)$(ncfilesdir)
+	$(DIR) ../nc_files $(prefix)/share/doc/linuxcnc/examples/nc_files
 	$(EXE) ../nc_files/M101 $(DESTDIR)$(ncfilesdir)
-	$(FILE) ../tcl/TkLinuxCNC $(DESTDIR)/etc/X11/app-defaults
+	$(FILE) ../tcl/TkLinuxCNC $(DESTDIR)$(prefix)/etc/X11/app-defaults
 	$(FILE) Makefile.modinc $(DESTDIR)$(datadir)/linuxcnc
 	$(EXE) $(TCL) $(DESTDIR)$(tcldir)
 	$(FILE) ../tcl/hal.so $(DESTDIR)$(tcldir)
@@ -866,9 +866,9 @@ COMMON=$(CONF)/common
 CONFILES=$(addsuffix /$(1), $(filter-out $(COMMON) $(CONF),\
                                          ${shell find ${CONF} -type d -print}))
 install-menu: $(XDGDESKTOP)
-	$(DIR) $(DESTDIR)/usr/share/applications/
+	$(DIR) $(DESTDIR)$(prefix)/usr/share/applications/
 	for d in $(XDGDESKTOP); do \
-	    $(FILE) $$d $(DESTDIR)/usr/share/applications/ ; \
+	    $(FILE) $$d $(DESTDIR)$(prefix)/usr/share/applications/ ; \
 	done
 
 endif # userspace

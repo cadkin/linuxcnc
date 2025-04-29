@@ -433,7 +433,7 @@ get_myaddress(foo);
     ],[
         AC_MSG_RESULT(no)
         AC_MSG_ERROR([Unable to use rpc.h])
-    
+
 ])
 
 #
@@ -1644,7 +1644,8 @@ fi
 AC_MSG_RESULT([$PYTHON_TK_VERSION])
 
 AC_MSG_CHECKING(for site-package location)
-SITEPY="$($PYTHON -c 'import sysconfig; s = sysconfig.get_scheme_names(); m=list(set(("deb_system", "rpm_prefix")) & set(s)); print(sysconfig.get_path("platlib", m.__getitem__(0))) if m else print("/usr/lib/python3/dist-packages");')"
+#SITEPY="$($PYTHON -c 'import sysconfig; s = sysconfig.get_scheme_names(); m=list(set(("deb_system", "rpm_prefix")) & set(s)); print(sysconfig.get_path("platlib", m.__getitem__(0))) if m else print("/usr/lib/python3/dist-packages");')"
+SITEPY="\$(prefix)/lib/python3/dist-packages"
 AC_MSG_RESULT($SITEPY)
 
 AC_MSG_CHECKING(for working GLU quadrics)
