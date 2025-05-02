@@ -1380,10 +1380,13 @@ Tcl $TCL_VERSION and Tk $TK_VERSION.  You can use --with-tkConfig= and --with-tc
 to override the autodetected versions.])
 fi
 
-if test -f $TCL_EXEC_PREFIX/bin/wish$TCL_VERSION; then
-    WISH=$TCL_EXEC_PREFIX/bin/wish$TCL_VERSION
-elif test -f $TCL_EXEC_PREFIX/bin/wish; then
-    WISH=$TCL_EXEC_PREFIX/bin/wish
+AC_MSG_NOTICE([TCL_EXEC_PREFIX: $TCL_EXEC_PREFIX])
+AC_MSG_NOTICE([TK_EXEC_PREFIX: $TK_EXEC_PREFIX])
+
+if test -f $TK_EXEC_PREFIX/bin/wish$TCL_VERSION; then
+    WISH=$TK_EXEC_PREFIX/bin/wish$TCL_VERSION
+elif test -f $TK_EXEC_PREFIX/bin/wish; then
+    WISH=$TK_EXEC_PREFIX/bin/wish
 else
     WISH=wish
 fi

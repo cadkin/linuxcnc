@@ -735,7 +735,7 @@ install-kernel-indep: install-dirs
 	$(FILE) ../lib/linuxcnc/canterp.so $(DESTDIR)$(libdir)/linuxcnc/
 	$(FILE) $(HEADERS) $(DESTDIR)$(includedir)/linuxcnc/
 	$(TREE) $(NC_FILES) $(DESTDIR)$(ncfilesdir)
-	$(DIR) ../nc_files $(prefix)/share/doc/linuxcnc/examples/nc_files
+	$(TREE) ../nc_files $(prefix)/share/doc/linuxcnc/examples/
 	$(EXE) ../nc_files/M101 $(DESTDIR)$(ncfilesdir)
 	$(FILE) ../tcl/TkLinuxCNC $(DESTDIR)$(prefix)/etc/X11/app-defaults
 	$(FILE) Makefile.modinc $(DESTDIR)$(datadir)/linuxcnc
@@ -866,9 +866,9 @@ COMMON=$(CONF)/common
 CONFILES=$(addsuffix /$(1), $(filter-out $(COMMON) $(CONF),\
                                          ${shell find ${CONF} -type d -print}))
 install-menu: $(XDGDESKTOP)
-	$(DIR) $(DESTDIR)$(prefix)/usr/share/applications/
+	$(DIR) $(DESTDIR)$(prefix)/share/applications/
 	for d in $(XDGDESKTOP); do \
-	    $(FILE) $$d $(DESTDIR)$(prefix)/usr/share/applications/ ; \
+	    $(FILE) $$d $(DESTDIR)$(prefix)/share/applications/ ; \
 	done
 
 endif # userspace

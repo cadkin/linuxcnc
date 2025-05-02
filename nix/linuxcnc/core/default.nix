@@ -1,7 +1,7 @@
 {
   src, version,
 
-  lib, stdenv,
+  lib, stdenv, wrapGAppsHook,
 
   automake, autoconf, pkg-config, ps, psmisc, sysvtools, util-linux, man, intltool, python3, groff, asciidoc,
 
@@ -19,14 +19,15 @@ let
   pyenv = python3.withPackages (py: [
     py.pygobject3
     py.tkinter
+    py.pyopengl
   ]);
+
+  pyInstallSite = "${placeholder "out"}/lib/python3/dist-packages";
 in stdenv.mkDerivation rec {
   pname = "linuxcnc";
 
   inherit version;
   inherit src;
-
-  #sourceRoot = "source/src";
 
   buildInputs = [
     libtirpc
@@ -63,6 +64,8 @@ in stdenv.mkDerivation rec {
     gobject-introspection
     groff
     asciidoc
+    tcl.tclPackageHook
+    wrapGAppsHook
   ];
 
   postPatch = ''
@@ -80,7 +83,12 @@ in stdenv.mkDerivation rec {
     "--enable-non-distributable=yes"
     "--with-boost-libdir=${boost}/lib"
     "--with-locale-dir=${placeholder "out"}/share"
-    "--with-sitepy=${placeholder "out"}/lib/python3/dist-packages"
+    "--with-sitepy=${pyInstallSite}"
+  ];
+
+  tclWrapperArgs = [
+    "--prefix PYTHONPATH : ${pyInstallSite}"
+    "--prefix PYTHONPATH : ${pyenv}/${pyenv.sitePackages}"
   ];
 
   makeFlags = [
